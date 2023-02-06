@@ -13,5 +13,5 @@ Instructions:
 Uses Tools->Manage Packages->Micropython-umqtt.simple
 
 
-<img src="images/front.png"><BR><BR>
-<img src="images/back.png"><BR>
+<img src="/images/front.png"><BR><BR>
+<img src="/images/back.png"><BR>
