@@ -3,7 +3,7 @@
 #developed using 4 sensors
 
 #todo:
-# add to github
+# improve docs on github
 # add probe offsets for fine tuning
 
 import machine, network, secrets
