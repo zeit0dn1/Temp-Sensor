@@ -4,7 +4,7 @@
 
 #todo:
 # improve docs on github
-# add probe offsets for fine tuning
+
 
 import machine, network, secrets
 import onewire
@@ -15,8 +15,10 @@ import ntptime
 from machine import Pin, I2C
 from ssd1306 import SSD1306_I2C
 from umqtt.simple import MQTTClient
-
 from machine import WDT
+import mysensors
+#fine tune offsets for probe temp readings.  Change to your probe id's
+
 
 
 #set up our watchdog timer to 8.3 sec
@@ -111,6 +113,12 @@ for device in sensors:
     s = binascii.hexlify(device)
     readable_string = s.decode('ascii')
     
+    #print(readable_string)
+    
+    
+    
+    #print(secrets.PROBENAME)
+    
     #let's publish our HA autodiscovery stuff
     #first the Config topic
     config = b'homeassistant/sensor/' + secrets.PROBENAME + readable_string + b'/config'
@@ -151,6 +159,9 @@ while True:
         OLEDrowCounter += 12
         #convert from Celcius and round the value
         tempF = round((ds18b20_sensor.read_temp(device) * 1.8)+32,1)
+        
+        #add any offset needed
+        tempF += float(mysensors.OFFSETS[readable_string])
         #display our sensor reading
         oled.text(str(tempF) + " F",OLEDColumn,OLEDrowCounter,1)
         #print(OLEDrowCounter)
