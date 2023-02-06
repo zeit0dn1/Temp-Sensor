@@ -12,13 +12,17 @@ So here it is, mostly as a backup for myself, but if anyone else can find value,
 I also figured out a way to read from the Seimens Logo8 controller to monitor directly, but its not yet ready to publish.
 
 Uses: <BR>
-Stainless Steel Probe DS18B20<BR>
-OLED Display Module, 128 x 64 0.96 inches OLED Display 12864 LCD Module for 51 Series MSP430 STM32<BR>
-Pico W
+4 x Stainless Steel Probe DS18B20<BR>
+1 x OLED Display Module, 128 x 64 0.96 inches OLED Display 12864 LCD Module for 51 Series MSP430 STM32<BR>
+1 x Pico W<BR>
+secrets.py file for passwords, etc. (example file provided)<BR>
+mysensors.py is used for adding or subtracting temperature offsets to probe values.<BR>
 
-Instructions:
+Requires:<BR>
+A functional MQTT broker<BR>
+HomeAssistant optional<BR>
+Uses Tools->Manage Packages->Micropython-umqtt.simple<BR>
 
-Uses Tools->Manage Packages->Micropython-umqtt.simple
 
 <BR>
 Circuit Visuals<BR>

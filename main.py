@@ -5,6 +5,7 @@
 #todo:
 # improve docs on github
 
+#NB: config secrets.py and mysensors.py
 
 import machine, network, secrets
 import onewire
@@ -17,9 +18,6 @@ from ssd1306 import SSD1306_I2C
 from umqtt.simple import MQTTClient
 from machine import WDT
 import mysensors
-#fine tune offsets for probe temp readings.  Change to your probe id's
-
-
 
 #set up our watchdog timer to 8.3 sec
 wdt = WDT(timeout=8300)
