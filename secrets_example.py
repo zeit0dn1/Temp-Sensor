@@ -1,0 +1,8 @@
+SSID = "wifi name"
+PASSWORD = "mypass!"
+CLIENT = "thisTempThing"
+MQTTHOST = "10.0.0.3"
+MQTTUSER = "mquser"
+MQTTPASS = "mqpassword"
+UTCOFFSET = "-8"
+PROBENAME = "ha_probes_"
