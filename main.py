@@ -4,7 +4,6 @@
 
 #todo:
 # improve docs on github
-# make it temp scale agnostic.  F or C
 
 #NB: config secrets.py and mysensors.py
 
@@ -30,9 +29,6 @@ wlan.active(True)
 #to list all SSID's seen
 #print (wlan.scan())                                     
 wlan.connect(secrets.SSID, secrets.PASSWORD)
-
-#to test if we are connected
-#print(wlan.isconnected())
 
 #pet the dog
 wdt.feed()
@@ -61,7 +57,6 @@ def sub_cb(topic, msg):
     print(msg)
 
 def connect_and_subscribe():
-  #global client_id, mqtt_server, topic_sub
   client = MQTTClient(secrets.CLIENT,secrets.MQTTHOST,user=secrets.MQTTUSER, password=secrets.MQTTPASS, keepalive=300, ssl=False, ssl_params={})
   client.set_callback(sub_cb)
   client.connect()
@@ -80,7 +75,7 @@ except OSError as e:
 #pet the dog
 wdt.feed()
 
-#let's set up the pico to use -6 UTC offset and set the clock properly
+#let's set up the pico to use a UTC offset and set the clock properly
 ntptime.settime()
 rtc = machine.RTC()
 #utc_shift = -6
@@ -112,12 +107,6 @@ for device in sensors:
     s = binascii.hexlify(device)
     readable_string = s.decode('ascii')
     
-    #print(readable_string)
-    
-    
-    
-    #print(secrets.PROBENAME)
-    
     #let's publish our HA autodiscovery stuff
     #first the Config topic
     config = b'homeassistant/sensor/' + secrets.PROBENAME + readable_string + b'/config'
@@ -139,8 +128,7 @@ while True:
     for device in sensors:
         s = binascii.hexlify(device)
         readable_string = s.decode('ascii')
-        #print(readable_string)
-        #print(msgCounter)
+
         #even msg, so shift to next column
         if (math.fmod(msgCounter, 2) == 0):
             OLEDColumn = 0
@@ -150,11 +138,10 @@ while True:
         if (msgCounter > 1):
             OLEDrowCounterBase = 36
         OLEDrowCounter = OLEDrowCounterBase
-        #print(OLEDrowCounterBase)
+
         #print only the last 4 digits of the sensor id
         oled.text(readable_string[-4:], OLEDColumn, OLEDrowCounter, 1)
-        #print(OLEDrowCounter)
-        #print(ds18b20_sensor.read_temp(device))
+
         OLEDrowCounter += 12
         if (secrets.SCALE  == "F"):
             #convert from Celcius and round the value
@@ -167,7 +154,6 @@ while True:
         tempF += float(mysensors.OFFSETS[readable_string])
         #display our sensor reading
         oled.text(str(tempF) + " " + secrets.SCALE,OLEDColumn,OLEDrowCounter,1)
-        #print(OLEDrowCounter)
            
         #publish our readings to MQTT for HA
         #get the localtime
@@ -192,7 +178,6 @@ while True:
         
     oled.show()
     OLEDrowCounter = 0 #reset counter
-    #print(OLEDrowCounter)
 
     msgCounter = 0
     OLEDrowCounterBase = 0
