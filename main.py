@@ -4,6 +4,7 @@
 
 #todo:
 # improve docs on github
+# make it temp scale agnostic.  F or C
 
 #NB: config secrets.py and mysensors.py
 
@@ -120,7 +121,7 @@ for device in sensors:
     #let's publish our HA autodiscovery stuff
     #first the Config topic
     config = b'homeassistant/sensor/' + secrets.PROBENAME + readable_string + b'/config'
-    data = b'{"uniq_id":"' + readable_string + b'","name":"Probe ' + readable_string[-4:] + b'", "dev_cla":"temperature", "state_class":"measurement","unit_of_measurement":"F", "state_topic":"homeassistant/sensor/' + readable_string + b'/state", "value_template":"{{ value_json.temperature}}" }'
+    data = b'{"uniq_id":"' + readable_string + b'","name":"Probe ' + readable_string[-4:] + b'", "dev_cla":"temperature", "state_class":"measurement","unit_of_measurement":"' + secrets.SCALE +'", "state_topic":"homeassistant/sensor/' + readable_string + b'/state", "value_template":"{{ value_json.temperature}}" }'
     client.publish(config,data,1) #publish and set it to retain
     counter += 1
     time.sleep_ms(250)
@@ -155,13 +156,17 @@ while True:
         #print(OLEDrowCounter)
         #print(ds18b20_sensor.read_temp(device))
         OLEDrowCounter += 12
-        #convert from Celcius and round the value
-        tempF = round((ds18b20_sensor.read_temp(device) * 1.8)+32,1)
+        if (secrets.SCALE  == "F"):
+            #convert from Celcius and round the value
+            tempF = round((ds18b20_sensor.read_temp(device) * 1.8)+32,1)
+        else:
+            #leave as C and round
+            tempF = round(ds18b20_sensor.read_temp(device),1)
         
         #add any offset needed
         tempF += float(mysensors.OFFSETS[readable_string])
         #display our sensor reading
-        oled.text(str(tempF) + " F",OLEDColumn,OLEDrowCounter,1)
+        oled.text(str(tempF) + " " + secrets.SCALE + '"',OLEDColumn,OLEDrowCounter,1)
         #print(OLEDrowCounter)
            
         #publish our readings to MQTT for HA
