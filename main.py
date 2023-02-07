@@ -166,7 +166,7 @@ while True:
         #add any offset needed
         tempF += float(mysensors.OFFSETS[readable_string])
         #display our sensor reading
-        oled.text(str(tempF) + " " + secrets.SCALE + '"',OLEDColumn,OLEDrowCounter,1)
+        oled.text(str(tempF) + " " + secrets.SCALE,OLEDColumn,OLEDrowCounter,1)
         #print(OLEDrowCounter)
            
         #publish our readings to MQTT for HA
